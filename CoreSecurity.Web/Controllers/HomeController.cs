@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CoreSecurity.Web.Models;
+using CoreSecurity.Web.Filters;
 
 namespace CoreSecurity.Web.Controllers
 {
@@ -17,7 +18,7 @@ namespace CoreSecurity.Web.Controllers
         {
             _logger = logger;
         }
-
+        [ServiceFilter(typeof(CheckWhiteList))] //method whitelist control
         public IActionResult Index()
         {
             return View();

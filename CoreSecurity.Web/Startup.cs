@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreSecurity.Web.Filters;
 using CoreSecurity.Web.MiddleWares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,11 +27,16 @@ namespace CoreSecurity.Web
         {
             services.Configure<IPList>(Configuration.GetSection("IPList"));
             services.AddControllersWithViews();
+            services.AddScoped<CheckWhiteList>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Global MiddleWare
+         /*   app.UseMiddleware<IPSafeMiddleWare>(); */
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -47,9 +53,7 @@ namespace CoreSecurity.Web
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseMiddleware<IPSafeMiddleWare>();
-
+             
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
